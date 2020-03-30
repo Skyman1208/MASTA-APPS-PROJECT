@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">UP!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lipsum">What are the Branches of Biology ?  Aerobiology – the study of airborne organic particles. Agriculture – the study of producing crops and raising livestock, with an emphasis on practical applications. Anatomy – the study of form and function, in plants, animals, and other organisms, or specifically in humans.</string>
+    <string name="name" />
+    <string name="search">Search</string>
+    <color name="orange">#FFA500</color>
+    <string name="title_activity_menu">Menu</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="about_apps">
+        \t\t\t\t\tMASTA Apps was developed with the purpose of facilitating and accelerating access to information for teaching and learning. This MASTA App contains a variety of teaching and learning aids based on subjects from year 1 to form 5.
+        \n\n\t\t\t\t\tThanks to all the teachers who have contributed materials, ideas and insights, determination and commitment to making this agenda a success. Thanks also to the team from the Technical University of Malaysia of Malacca who are the backbone of this  noble cause.
+        \n\n\t\t\t\t\tWe hope that with these MASTA Apps, the process of accessing teaching and learning information by teachers and students from all over Malaysia will be made easier, faster and more effective.
+    </string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="home_second">Home Second</string>
+</resources>
