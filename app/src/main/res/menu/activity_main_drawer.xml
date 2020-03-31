@@ -20,8 +20,8 @@
         android:icon="@drawable/ic_info_black_24dp"
         android:title="About" />
 
-    <!--<item
+    <item
         android:id="@+id/action_logout"
         android:icon="@drawable/ic_exit_to_app_black_24dp"
-        android:title="Logout" />-->
+        android:title="Logout" />
 </menu>

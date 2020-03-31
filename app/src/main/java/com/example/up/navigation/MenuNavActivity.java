@@ -1,8 +1,11 @@
 package com.example.up.navigation;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.up.R;
+import com.example.up.loginSignup.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -36,6 +39,16 @@ public class MenuNavActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        NavigationView navView = findViewById(R.id.nav_view);
+        navView.getMenu().findItem(R.id.action_logout).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent intent = new Intent(MenuNavActivity.this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
     @Override
