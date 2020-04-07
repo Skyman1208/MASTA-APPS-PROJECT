@@ -34,9 +34,9 @@
             android:name="com.example.up.navigation.menuNav.home.subject.Bio.Biology"
             tools:ignore="DuplicateActivity" />
         <activity android:name="com.example.up.navigation.menuNav.home.HomeFragment" />
-        <activity android:name=".loginSignup.Signup" />
+        <activity android:name=".loginSignup.SignIn" />
         <activity android:name="com.example.up.navigation.menuNav.home.subject.retrieveNDisplayData.ImagesActivity" />
-        <activity android:name=".loginSignup.LoginActivity">
+        <activity android:name=".loginSignup.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

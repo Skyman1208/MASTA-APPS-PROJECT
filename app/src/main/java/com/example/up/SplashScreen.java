@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.up.loginSignup.Login;
+import com.example.up.loginSignup.SignIn;
 import com.example.up.navigation.MenuNavActivity;
 
 public class SplashScreen extends AppCompatActivity {

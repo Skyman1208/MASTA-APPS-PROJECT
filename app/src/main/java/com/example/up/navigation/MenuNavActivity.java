@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.up.R;
-import com.example.up.loginSignup.LoginActivity;
+import com.example.up.loginSignup.Login;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -44,7 +44,8 @@ public class MenuNavActivity extends AppCompatActivity {
         navView.getMenu().findItem(R.id.action_logout).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intent = new Intent(MenuNavActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MenuNavActivity.this, Login.class);
+
                 startActivity(intent);
                 return true;
             }
