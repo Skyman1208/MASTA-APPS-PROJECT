@@ -1,164 +1,371 @@
 package com.example.up.navigation.menuNav.uploadData;
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.up.R;
-import com.example.up.navigation.menuNav.home.subject.retrieveNDisplayData.ImagesActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import java.util.Objects;
-
-import static android.app.Activity.RESULT_OK;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class UploadFragment extends Fragment {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
-
+    boolean first = true;
+    private Spinner s_Subjects;
     private Button mButtonUpload;
-    private EditText mEditTextFileName;
+    private EditText mTittleName;
+    private EditText mLink;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
-    private EditText mLink;
-    private TextView fileSizeInByte;
-    private TextView fileSizeInPercent;
-    private Uri mImageUri;
-
-    private StorageReference mStorageRef;
+    private Bitmap bitmap;
+    private long maxId;
     private DatabaseReference mDatabaseRef;
-
-    private StorageTask mUploadTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_upload, container, false);
 
         mButtonUpload = root.findViewById(R.id.btn_upload);
-        mEditTextFileName = root.findViewById(R.id.et_tittle);
+        mTittleName = root.findViewById(R.id.et_tittle);
         mLink = root.findViewById(R.id.et_link);
         mImageView = root.findViewById(R.id.iv_upload_image);
         mProgressBar = root.findViewById(R.id.pb_upload_image);
-        fileSizeInByte = root.findViewById(R.id.tv_fileSizeInByte);
-        fileSizeInPercent = root.findViewById(R.id.tv_fileSizeInPercent);
+        s_Subjects = root.findViewById(R.id.s_subjects);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+        String [] MASTA_Subjects = {"-", "Physics", "Chemistry", "Biology", "Additional Mathematics",
+                "Mathematics (PRIMARY)", "Mathematics (SECONDARY)", "Science (PRIMARY)", "Science (SECONDARY)",
+                "Rekabentuk Teknologi (PRIMARY)", "Rekabentuk Teknologi (SECONDARY)", "Teknologi Maklumat dan Komunikasi",
+                "Asas Sains Komputer", "Sains Komputer"};
+        final List<String> MASTA_Subjects_List = new ArrayList<>(Arrays.asList(MASTA_Subjects));
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
+                R.layout.support_simple_spinner_dropdown_item, MASTA_Subjects_List) {
 
-        mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                openFileChooser();
+            public boolean isEnabled(int position){
+                if(position == 0)
+                    return false;
+                else
+                    return true;
             }
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                tv.setTextSize(15);
+                if(position == 0){
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY);
+                    tv.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
+                }
+                else {
+                    tv.setTextColor(Color.BLACK);
+                    tv.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
+                }
+                return view;
+            }
+        };
+
+        s_Subjects.setAdapter(adapter);
+        s_Subjects.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                maxId = 0;
+                if(position > 0){
+                    // Notify the selected item text
+                    //Toast.makeText(getActivity(), "Selected : " + selectedSubject, Toast.LENGTH_SHORT).show();
+                }
+                if (position == 1){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/Physics");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 2){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/Chemistry");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 3){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/Biology");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 4){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/AddMath");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 5){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/Math_P");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 6){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/Math_S");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 7){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/Science_P");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 8){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/Science_S");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 9){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/RekaBentukTeknologi_P");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 10){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/RekaBentukTeknologi_S");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 11){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/TeknologiMaklumatKomunikasi");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 12){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/AsasSainsKomputer");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if (position == 13){
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/SainsKomputer");
+                    mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                                maxId = (dataSnapshot.getChildrenCount());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mLink.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String linkText = mLink.getText().toString();
+
+                    MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                    try{
+                        if(linkText.isEmpty()) {
+                            mImageView.setImageResource(R.drawable.addimage);
+                        }
+                        else
+                        {
+                            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                            BitMatrix bitMatrix = multiFormatWriter.encode(linkText, BarcodeFormat.QR_CODE,
+                                    2500, 2500);
+                            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                            mImageView.setImageBitmap(bitmap);
+                        }
+
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
+                }
         });
 
         mButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mUploadTask != null && mUploadTask.isInProgress()) {
-                    Toast.makeText(getActivity(), "Upload in progress", Toast.LENGTH_SHORT).show();
+                mProgressBar.setVisibility(View.VISIBLE);
+                if (s_Subjects.getSelectedItemId() != 0 && mTittleName.getText().toString() != "" && mLink.getText().toString() != "") {
+                    UploadModel uploadModel = new UploadModel(mTittleName.getText().toString().trim(), mLink.getText().toString().trim());
+                    String uploadId = String.valueOf(maxId + 1);
+                    mDatabaseRef.child(uploadId).setValue(uploadModel);
+
+                    mProgressBar.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
+
+                    mTittleName.setText("");
+                    mLink.setText("");
+                    mImageView.setImageResource(R.drawable.addimage);
+                    s_Subjects.setSelection(0);
                 }
-                else {
-                    uploadFile();
-                }
+                else
+                    Toast.makeText(getActivity(), "Please fill all the blanks.", Toast.LENGTH_SHORT).show();
+
+                mProgressBar.setVisibility(View.GONE);
             }
         });
 
         return root;
-    }
-
-    private void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            mImageUri = data.getData();
-
-            Picasso.with(getActivity()).load(mImageUri).into(mImageView);
-        }
-    }
-
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = Objects.requireNonNull(getActivity()).getApplicationContext().getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
-    }
-
-    private void uploadFile() {
-        if (mEditTextFileName.getText().toString() != "" && mLink.getText().toString() != "" && mImageUri != null) {
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
-
-            mUploadTask = fileReference.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            UploadModel uploadModel = new UploadModel(mEditTextFileName.getText().toString().trim(), mLink.getText().toString().trim(), taskSnapshot.getDownloadUrl().toString());
-                            String uploadId = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(uploadId).setValue(uploadModel);
-
-                            Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
-
-                            mEditTextFileName.setText("");
-                            mLink.setText("");
-                            mImageView.setImageDrawable(null);
-                            mProgressBar.setProgress(0);
-                            fileSizeInByte.setText("0/0 KB");
-                            fileSizeInPercent.setText("0%");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            mProgressBar.setProgress((int) progress);
-                            String progressText = taskSnapshot.getBytesTransferred()/1024 + "/" + taskSnapshot.getTotalByteCount()/1024 + " KB";
-                            fileSizeInByte.setText(progressText);
-                            fileSizeInPercent.setText((int) progress + "%");
-                        }
-                    });
-        }
-        else {
-            Toast.makeText(getActivity(), "Please fill all the blanks.", Toast.LENGTH_SHORT).show();
-        }
     }
 }

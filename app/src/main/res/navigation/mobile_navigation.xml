@@ -27,7 +27,4 @@
         android:name="com.example.up.navigation.menuNav.uploadData.UploadFragment"
         android:label="Upload"
         tools:layout="@layout/fragment_upload" />
-    <fragment
-        android:id="@+id/nav_logout"
-        android:label="Logout" />
 </navigation>

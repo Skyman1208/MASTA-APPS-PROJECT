@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?colorPrimary"
     android:orientation="vertical"
-    tools:context=".loginSignup.LoginActivity"
+    tools:context=".loginSignup.LogIn"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
     <RelativeLayout
@@ -97,13 +97,13 @@
                 </LinearLayout>
 
             </LinearLayout>
-                <TextView
+                <!--<TextView
                     android:id="@+id/text_view_forget_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:paddingTop="5dp"
-                    android:text="Forgot Password?" />
+                    android:text="Forgot Password?" />-->
 
                 <Button
                     android:id="@+id/btn_log_in"

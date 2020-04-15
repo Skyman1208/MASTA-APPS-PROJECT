@@ -33,4 +33,24 @@
     <string name="input_error_email_invalid" />
     <string name="input_error_password" />
     <string name="input_error_password_length" />
+
+    <string-array name="MASTA_Subjects">
+        <item>Physics</item>
+        <item>Chemistry</item>
+        <item>Biology</item>
+        <item>Additional Mathematics</item>
+
+        <item>Mathematics (PRIMARY)</item>
+        <item>Mathematics (SECONDARY)</item>
+
+        <item>Science (PRIMARY)</item>
+        <item>Science (SECONDARY)</item>
+
+        <item>Rekabentuk Teknologi (PRIMARY)</item>
+        <item>Rekabentuk Teknologi (SECONDARY)</item>
+
+        <item>Teknologi Maklumat dan Komunikasi</item>
+        <item>Asas Sains Komputer</item>
+        <item>Sains Komputer</item>
+    </string-array>
 </resources>
