@@ -2,7 +2,6 @@ package com.example.up.loginSignup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.up.R;
-import com.example.up.SplashScreen;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,8 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SignUp extends AppCompatActivity {
 
+    private EditText et_userName;
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private EditText et_PhoneNo;
     private Button btn_signUp;
     private TextView tv_login;
     private long maxId, userID;
@@ -43,8 +43,10 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        et_userName = findViewById(R.id.et_fullName_signUp);
         editTextEmail = findViewById(R.id.et_email_signUp);
         editTextPassword = findViewById(R.id.et_password_signUp);
+        et_PhoneNo = findViewById(R.id.et_phoneNo_signUp);
         progressBar = findViewById(R.id.progressbar);
         progressBar.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
@@ -85,8 +87,17 @@ public class SignUp extends AppCompatActivity {
 
         boolean passStatus = true;
 
+        final String fullName = et_userName.getText().toString().trim();
         final String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
+        final String password = editTextPassword.getText().toString().trim();
+        final String phoneNo = et_PhoneNo.getText().toString().trim();
+
+        if (fullName.isEmpty()) {
+            et_userName.setError(getString(R.string.input_error_email));
+            et_userName.requestFocus();
+
+            passStatus = false;
+        }
 
         if (email.isEmpty()) {
             editTextEmail.setError(getString(R.string.input_error_email));
@@ -94,7 +105,6 @@ public class SignUp extends AppCompatActivity {
 
             passStatus = false;
         }
-
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError(getString(R.string.input_error_email_invalid));
             editTextEmail.requestFocus();
@@ -108,10 +118,16 @@ public class SignUp extends AppCompatActivity {
 
             passStatus = false;
         }
-
         if (password.length() < 6) {
             editTextPassword.setError(getString(R.string.input_error_password_length));
             editTextPassword.requestFocus();
+
+            passStatus = false;
+        }
+
+        if (phoneNo.isEmpty()) {
+            et_PhoneNo.setError(getString(R.string.input_error_password));
+            et_PhoneNo.requestFocus();
 
             passStatus = false;
         }
@@ -124,12 +140,12 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                User user = new User(email);
+                                UserManager userManager = new UserManager(fullName, email, password, phoneNo);
 
                                 userID = maxId + 1;
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(String.valueOf("MASTA_U" + userID))//FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        .setValue(userManager).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         progressBar.setVisibility(View.GONE);

@@ -46,8 +46,25 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/et_fullName_signUp"
+                        android:hint="Full name"
+                        android:layout_centerHorizontal="true"
+                        android:enabled="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textAlignment="center"
+                        android:inputType="textEmailAddress"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="15dp">
 
                     <ImageView
                         android:layout_width="35dp"
@@ -63,7 +80,7 @@
 
                         <EditText
                             android:id="@+id/et_email_signUp"
-                            android:hint="Your email"
+                            android:hint="Email"
                             android:layout_centerHorizontal="true"
                             android:enabled="true"
                             android:layout_width="match_parent"
@@ -71,7 +88,7 @@
                             android:textSize="16dp"
                             android:inputType="textEmailAddress"/>
                     </LinearLayout>
-            </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -93,7 +110,7 @@
 
                         <EditText
                             android:id="@+id/et_password_signUp"
-                            android:hint="Your password"
+                            android:hint="Password"
                             android:textColor="@android:color/black"
                             android:layout_centerHorizontal="true"
                             android:enabled="true"
@@ -101,6 +118,36 @@
                             android:layout_height="wrap_content"
                             android:textSize="16dp"
                             android:inputType="textPassword"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/phone"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="20dp">
+
+                        <EditText
+                            android:id="@+id/et_phoneNo_signUp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:enabled="true"
+                            android:hint="xxx-xxxxxxxx"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            android:textColor="@android:color/black"
+                            android:textSize="16dp" />
                     </LinearLayout>
                 </LinearLayout>
 

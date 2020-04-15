@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -325,6 +326,7 @@ public class UploadFragment extends Fragment {
                     MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                     try{
                         if(linkText.isEmpty()) {
+                            mProgressBar.setVisibility(View.GONE);
                             mImageView.setImageResource(R.drawable.addimage);
                         }
                         else
@@ -347,17 +349,21 @@ public class UploadFragment extends Fragment {
             public void onClick(View v) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 if (s_Subjects.getSelectedItemId() != 0 && mTittleName.getText().toString() != "" && mLink.getText().toString() != "") {
-                    UploadModel uploadModel = new UploadModel(mTittleName.getText().toString().trim(), mLink.getText().toString().trim());
-                    String uploadId = String.valueOf(maxId + 1);
-                    mDatabaseRef.child(uploadId).setValue(uploadModel);
+                    if (Patterns.WEB_URL.matcher(mLink.getText().toString()).matches()) {
+                        UploadModel uploadModel = new UploadModel(mTittleName.getText().toString().trim(), mLink.getText().toString().trim());
+                        String uploadId = String.valueOf(maxId + 1);
+                        mDatabaseRef.child(uploadId).setValue(uploadModel);
 
-                    mProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
+                        mProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
 
-                    mTittleName.setText("");
-                    mLink.setText("");
-                    mImageView.setImageResource(R.drawable.addimage);
-                    s_Subjects.setSelection(0);
+                        mTittleName.setText("");
+                        mLink.setText("");
+                        mImageView.setImageResource(R.drawable.addimage);
+                        s_Subjects.setSelection(0);
+                    }
+                    else
+                        Toast.makeText(getActivity(), "URL is invalid!", Toast.LENGTH_LONG).show();
                 }
                 else
                     Toast.makeText(getActivity(), "Please fill all the blanks.", Toast.LENGTH_SHORT).show();

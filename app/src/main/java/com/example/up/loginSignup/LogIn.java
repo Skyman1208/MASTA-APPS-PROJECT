@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.up.R;
 import com.example.up.navigation.MenuNavActivity;
+import com.example.up.navigation.menuNav.home.subject.retrieveNDisplayData.ImagesActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,6 +28,9 @@ public class LogIn extends AppCompatActivity {
     Button userLogin;
     ProgressBar progressBar;
     TextView tv_register;
+    UserManager usermanager;
+
+    public static final String EXTRA_EMAIL = "email";
 
     FirebaseAuth firebaseAuth;
 
@@ -64,7 +68,10 @@ public class LogIn extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 if(task.isSuccessful()){
                                     if (firebaseAuth.getCurrentUser().isEmailVerified()){
-                                        startActivity(new Intent(LogIn.this, MenuNavActivity.class));
+                                        usermanager.setEmail(userEmail.getText().toString());
+                                        Intent toHome = new Intent(LogIn.this, MenuNavActivity.class);
+                                        toHome.putExtra(LogIn.EXTRA_EMAIL, userEmail.toString());
+                                        startActivity(toHome);
                                     }
                                     else {
                                         Toast.makeText(LogIn.this, "Please verify your email address",
