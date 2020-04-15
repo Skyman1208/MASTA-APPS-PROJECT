@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.up.R;
-import com.example.up.loginSignup.Login;
+import com.example.up.loginSignup.LogIn;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 public class MenuNavActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,10 @@ public class MenuNavActivity extends AppCompatActivity {
         navView.getMenu().findItem(R.id.action_logout).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intent = new Intent(MenuNavActivity.this, Login.class);
-
+                Intent intent = new Intent(MenuNavActivity.this, LogIn.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                firebaseAuth.getInstance().signOut();
                 startActivity(intent);
                 return true;
             }

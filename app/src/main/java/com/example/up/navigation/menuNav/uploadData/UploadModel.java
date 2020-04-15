@@ -4,26 +4,25 @@ import com.google.firebase.database.Exclude;
 
 public class UploadModel {
     private String mName;
-    private String mImageUrl;
-    private String mKey;
     private String mLink;
+    private String mKey;
 
-    public UploadModel() { }
+    public UploadModel() {}
 
-    public UploadModel(String name, String link, String imageUrl) {
+    public UploadModel(String name, String link) {
         if (name.trim().equals("")) {
-            name = "No title";
+            name = "None";
         }
+        if (link.trim().equals("")) {
+            link = "None";
+        }
+
         mName = name;
-        mImageUrl = imageUrl;
         mLink = link;
     }
 
     public String getName() { return mName; }
     public void setName(String name) { mName = name; }
-
-    public String getImageUrl() { return mImageUrl; }
-    public void setImageUrl(String imageUrl) { mImageUrl = imageUrl; }
 
     public String getLink() { return mLink; }
     public void setLink(String link) { mLink = link; }

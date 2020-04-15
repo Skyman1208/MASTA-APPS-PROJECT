@@ -43,20 +43,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public void onBindViewHolder(ImageViewHolder holder, final int position) {
         UploadModel uploadModelCurrent = mUploadModels.get(position);
         holder.textViewName.setText(uploadModelCurrent.getName());
-        Picasso.with(mContext)
-                .load(uploadModelCurrent.getImageUrl())
-                .placeholder(R.mipmap.ic_launcher)
-                .fit()
-                .centerCrop()
-                .into(holder.imageView);
-
+        holder.imageView.setImageResource(R.drawable.qr);
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent detailIntent = new Intent(mContext, ViewQrCode.class);
                 UploadModel clickedItem = mUploadModels.get(position);
-                detailIntent.putExtra(ImagesActivity.EXTRA_URL, clickedItem.getImageUrl());
+                detailIntent.putExtra(ImagesActivity.EXTRA_URL, clickedItem.getLink());
                 detailIntent.putExtra(ImagesActivity.EXTRA_NAME, clickedItem.getName());
                 mContext.startActivity(detailIntent);
             }
@@ -68,8 +62,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         return mUploadModels.size();
     }
 
-    public void updateList(List<UploadModel> newList)
-    {
+    public void updateList(List<UploadModel> newList) {
         exampleListFull = new ArrayList<>();
         exampleListFull.addAll(newList);
         notifyDataSetChanged();

@@ -31,14 +31,13 @@ import java.util.List;
 
 public class ImagesActivity extends AppCompatActivity implements ImageAdapter.OnItemClickListener {
 
-    public static final String EXTRA_URL = "imageUrl";
+    public static final String EXTRA_URL = "link";
     public static final String EXTRA_NAME = "name";
 
     public RecyclerView mRecyclerView;
     public ImageAdapter mAdapter;
     public ProgressBar mProgressCircle;
 
-    public FirebaseStorage mStorage;
     public DatabaseReference mDatabaseRef;
     public ValueEventListener mDBListener;
 
@@ -73,9 +72,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(ImagesActivity.this);
 
-        mStorage = FirebaseStorage.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
-
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/Biology");
         mDBListener = mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -114,12 +111,13 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     public void onItemClick(int position) {
         UploadModel selectedItem = mUploadModels.get(position);
         final String selectedLink = selectedItem.getLink();
-        if (selectedLink != "" || selectedLink != null) {
+        if (selectedLink.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "URL Link doesn't exist", Toast.LENGTH_SHORT).show();
+        } else{
             Uri uri = Uri.parse(selectedLink); // missing 'http://' will cause crashed
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
-        } else
-            Toast.makeText(getApplicationContext(), "URL Link doesn't exist", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -133,14 +131,8 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         final UploadModel selectedItem = mUploadModels.get(position);
         final String selectedKey = selectedItem.getKey();
 
-        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
-        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                mDatabaseRef.child(selectedKey).removeValue();
-                Toast.makeText(ImagesActivity.this, selectedItem.getName() + " is deleted", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mDatabaseRef.child(selectedKey).removeValue();
+        Toast.makeText(ImagesActivity.this, selectedItem.getName() + " is deleted", Toast.LENGTH_SHORT).show();
     }
 
     @Override
