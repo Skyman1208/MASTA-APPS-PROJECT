@@ -9,6 +9,7 @@ import com.example.up.loginSignup.LogIn;
 import com.example.up.navigation.menuNav.profile.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -22,14 +23,18 @@ public class MenuNavActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     FirebaseAuth firebaseAuth;
+    FirebaseDatabase database;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_nav);
 
+
+
         Intent intentFromLogIn = getIntent();
-        final String currEmail = intentFromLogIn.getStringExtra(LogIn.EXTRA_EMAIL);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,15 +53,7 @@ public class MenuNavActivity extends AppCompatActivity {
 
         NavigationView navView = findViewById(R.id.nav_view);
 
-        navView.getMenu().findItem(R.id.nav_profile).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intentToProfile = new Intent(MenuNavActivity.this, ProfileFragment.class);
-                intentToProfile.putExtra(LogIn.EXTRA_EMAIL, currEmail);
-                startActivity(intentToProfile);
-                return true;
-            }
-        });
+
         navView.getMenu().findItem(R.id.action_logout).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {

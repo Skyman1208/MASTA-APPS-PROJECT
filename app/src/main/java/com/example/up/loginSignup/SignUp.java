@@ -91,6 +91,7 @@ public class SignUp extends AppCompatActivity {
         final String email = editTextEmail.getText().toString().trim();
         final String password = editTextPassword.getText().toString().trim();
         final String phoneNo = et_PhoneNo.getText().toString().trim();
+        final String userId = mDatabaseRef.push().getKey();
 
         if (fullName.isEmpty()) {
             et_userName.setError(getString(R.string.input_error_email));
@@ -140,11 +141,11 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                UserManager userManager = new UserManager(fullName, email, password, phoneNo);
+                                UserManager userManager = new UserManager(fullName, email, password, phoneNo, userId);
 
-                                userID = maxId + 1;
+
                                 FirebaseDatabase.getInstance().getReference("Users")
-                                        .child(String.valueOf("MASTA_U" + userID))//FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child(String.valueOf(userId))//FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(userManager).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

@@ -7,11 +7,12 @@ public class UserManager {
     public String email;
     public String userPassword;
     public String userPhoneNo;
+    public String userId;
     private String uKey;
 
     public UserManager(){ }
 
-    public UserManager(String userName, String email, String userPassword, String userPhoneNo){
+    public UserManager(String userName, String email, String userPassword, String userPhoneNo, String userId){
         if(userName.isEmpty())
             userName = "None";
         else
@@ -31,19 +32,24 @@ public class UserManager {
             userPhoneNo = "None";
         else
             this.userPhoneNo = userPhoneNo;
+
+        this.userId = userId;
     }
 
-    public String getuName() { return userName; }
-    public void setuName(String userName) { userName = userName; }
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { userName = userName; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { email = email; }
 
-    public String getPassword() { return userPassword; }
-    public void setPassword(String userPassword) { userPassword = userPassword; }
+    public String getUserPassword() { return userPassword; }
+    public void setUserPassword(String userPassword) { userPassword = userPassword; }
 
     public String getUserPhoneNo() { return userPhoneNo; }
     public void setUserPhoneNo(String userPhoneNo) { userPhoneNo = userPhoneNo; }
+
+    public String getUserId(){return userId;}
+
 
     @Exclude
     public String getuKey() { return uKey; }
