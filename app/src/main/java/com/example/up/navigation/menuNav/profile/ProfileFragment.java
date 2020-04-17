@@ -140,7 +140,7 @@ public class ProfileFragment extends Fragment {
                 uploadImage();
                 String userName = et_userName_profile.getText().toString().trim();
                 String email = editTextEmail_profile.getText().toString().trim();
-                String userPhoneNo = et_userName_profile.getText().toString().trim();
+                String userPhoneNo = et_PhoneNo_profile.getText().toString().trim();
                 String userPassword = editTextPassword_profile.getText().toString().trim();
 
                 updateProfile(userId, userName, email, userPhoneNo, userPassword);
