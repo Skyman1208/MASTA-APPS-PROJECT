@@ -56,4 +56,3 @@ public class UserManager {
     @Exclude
     public void setuKey(String ukey) { uKey = ukey; }
 }
-
