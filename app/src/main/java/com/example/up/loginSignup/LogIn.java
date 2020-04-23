@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.up.R;
+import com.example.up.colourAnimation;
 import com.example.up.navigation.MenuNavActivity;
 import com.example.up.navigation.menuNav.home.subject.retrieveNDisplayData.ImagesActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +31,7 @@ public class LogIn extends AppCompatActivity {
     ProgressBar progressBar;
     TextView tv_register;
     UserManager usermanager;
+    RelativeLayout mLayout;
 
     public static final String EXTRA_EMAIL = "email";
 
@@ -46,6 +49,9 @@ public class LogIn extends AppCompatActivity {
         userLogin = findViewById(R.id.btn_log_in);
         tv_register = findViewById(R.id.tv_register);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        mLayout = findViewById(R.id.bg_login);
+        new colourAnimation(mLayout);
 
         tv_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +76,6 @@ public class LogIn extends AppCompatActivity {
                                     if (firebaseAuth.getCurrentUser().isEmailVerified()){
                                         usermanager.setEmail(userEmail.getText().toString());
                                         Intent toHome = new Intent(LogIn.this, MenuNavActivity.class);
-                                        toHome.putExtra(LogIn.EXTRA_EMAIL, userEmail.toString());
                                         startActivity(toHome);
                                     }
                                     else {

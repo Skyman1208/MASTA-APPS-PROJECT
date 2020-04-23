@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.up.R;
+import com.example.up.colourAnimation;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +43,7 @@ import java.util.List;
 
 public class UploadFragment extends Fragment {
 
-    boolean first = true;
+    RelativeLayout mLayout;
     private Spinner s_Subjects;
     private Button mButtonUpload;
     private EditText mTittleName;
@@ -62,6 +64,9 @@ public class UploadFragment extends Fragment {
         mImageView = root.findViewById(R.id.iv_upload_image);
         mProgressBar = root.findViewById(R.id.pb_upload_image);
         s_Subjects = root.findViewById(R.id.s_subjects);
+
+        mLayout = root.findViewById(R.id.bg_upload_details);
+        new colourAnimation(mLayout);
 
         String [] MASTA_Subjects = {"-", "Physics", "Chemistry", "Biology", "Additional Mathematics",
                 "Mathematics (PRIMARY)", "Mathematics (SECONDARY)", "Science (PRIMARY)", "Science (SECONDARY)",
@@ -95,13 +100,14 @@ public class UploadFragment extends Fragment {
                 return view;
             }
         };
-
         s_Subjects.setAdapter(adapter);
         s_Subjects.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 maxId = 0;
-                if(position > 0){
+                if(position >= 0){
+                    TextView textView = (TextView)parent.getChildAt(0);
+                    textView.setTextColor(getResources().getColor(R.color.white));
                     // Notify the selected item text
                     //Toast.makeText(getActivity(), "Selected : " + selectedSubject, Toast.LENGTH_SHORT).show();
                 }
@@ -327,7 +333,7 @@ public class UploadFragment extends Fragment {
                     try{
                         if(linkText.isEmpty()) {
                             mProgressBar.setVisibility(View.GONE);
-                            mImageView.setImageResource(R.drawable.addimage);
+                            mImageView.setImageResource(R.drawable.qrcode);
                         }
                         else
                         {
@@ -359,7 +365,7 @@ public class UploadFragment extends Fragment {
 
                         mTittleName.setText("");
                         mLink.setText("");
-                        mImageView.setImageResource(R.drawable.addimage);
+                        mImageView.setImageResource(R.drawable.qrcode);
                         s_Subjects.setSelection(0);
                     }
                     else

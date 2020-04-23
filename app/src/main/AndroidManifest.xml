@@ -31,12 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.up.navigation.menuNav.home.subject.che.Chemistry" />
         <activity android:name=".navigation.menuNav.uploadData.UploadFragment" />
-        <activity android:name="com.example.up.navigation.menuNav.home.subject.phy.Physics" />
-        <activity
-            android:name="com.example.up.navigation.menuNav.home.subject.Bio.Biology"
-            tools:ignore="DuplicateActivity" />
         <activity android:name="com.example.up.navigation.menuNav.home.HomeFragment" />
         <activity android:name=".loginSignup.SignUp" />
         <activity android:name="com.example.up.navigation.menuNav.home.subject.retrieveNDisplayData.ImagesActivity" />

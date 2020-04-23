@@ -2,33 +2,64 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:id="@+id/bg_about"
     android:layout_height="match_parent"
-    android:padding="30dp"
+    android:layout_width="match_parent"
+    android:background="@drawable/gradient_animation"
     tools:context=".navigation.menuNav.about.AboutFragment">
 
-    <TextView
-        android:id="@+id/txt_tittleAbout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:justificationMode="inter_word"
-        android:text="MALAYSIA STEM TEACHER ASSOCIATION \nMASTA Apps"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"/>
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
-    <TextView
-        android:id="@+id/txt_about"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_tittleAbout"
-        android:layout_marginTop="35dp"
-        android:justificationMode="inter_word"
-        android:text="@string/about_apps"
-        android:textColor="#000000"
-        android:textSize="14dp"
-        android:layout_centerHorizontal="true"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp">
+
+            <LinearLayout
+                android:id="@+id/logo"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:background="@drawable/bg_circle"
+                android:elevation="5dp"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:id="@+id/iv_MASTALogin"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:elevation="5dp"
+                    android:src="@drawable/masta" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_tittleAbout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:justificationMode="inter_word"
+                android:text="MALAYSIA STEM TEACHER ASSOCIATION \nMASTA Apps"
+                android:layout_below="@+id/logo"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:id="@+id/txt_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_tittleAbout"
+                android:layout_marginTop="35dp"
+                android:justificationMode="inter_word"
+                android:text="@string/about_apps"
+                android:textColor="#FFFFFF"
+                android:textSize="14dp"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

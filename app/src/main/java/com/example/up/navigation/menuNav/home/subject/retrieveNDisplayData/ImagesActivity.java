@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.up.R;
+import com.example.up.colourAnimation;
+import com.example.up.navigation.menuNav.home.HomeFragment;
 import com.example.up.navigation.menuNav.uploadData.UploadModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +40,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     public RecyclerView mRecyclerView;
     public ImageAdapter mAdapter;
     public ProgressBar mProgressCircle;
+    RelativeLayout mLayout;
 
     public DatabaseReference mDatabaseRef;
     public ValueEventListener mDBListener;
@@ -48,6 +52,12 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrieve_data);
+
+        Intent intent = getIntent();
+        String viewSelectedSubject = intent.getStringExtra(HomeFragment.EXTRA_SUBJECT);
+
+        mLayout = findViewById(R.id.bg_retrieve_data);
+        new colourAnimation(mLayout);
 
         EditText editText = findViewById(R.id.search);
         editText.addTextChangedListener(new TextWatcher() {
@@ -72,7 +82,8 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(ImagesActivity.this);
 
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Uploads/Subjects/Biology");
+        String databasePath = "Uploads/Subjects/" + viewSelectedSubject;
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(databasePath);
         mDBListener = mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -97,14 +108,14 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     }
 
     public void filter(String text) {
-        ArrayList<UploadModel> filteredlist = new ArrayList<>();
+        ArrayList<UploadModel> filteredList = new ArrayList<>();
 
         for (UploadModel item : mUploadModels) {
             if (item.getName().toLowerCase().contains(text.toLowerCase())) {
-                filteredlist.add(item);
+                filteredList.add(item);
             }
         }
-        mAdapter.filterList(filteredlist);
+        mAdapter.filterList(filteredList);
     }
 
     @Override

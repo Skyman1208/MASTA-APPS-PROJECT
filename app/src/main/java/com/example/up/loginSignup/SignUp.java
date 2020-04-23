@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.up.R;
+import com.example.up.colourAnimation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,6 +36,7 @@ public class SignUp extends AppCompatActivity {
     private TextView tv_login;
     private long maxId, userID;
     private ProgressBar progressBar;
+    RelativeLayout mLayout;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseRef;
@@ -52,6 +55,9 @@ public class SignUp extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         tv_login = findViewById(R.id.tv_login);
         btn_signUp = findViewById(R.id.btn_register_signUp);
+
+        mLayout = findViewById(R.id.bg_signUp);
+        new colourAnimation(mLayout);
 
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override

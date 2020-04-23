@@ -25,31 +25,29 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileFragment extends Fragment {
 
     private DatabaseReference reff;
-    private EditText et_userName_profile;
-    private EditText editTextEmail_profile;
-    private EditText editTextPassword_profile;
-    private EditText et_PhoneNo_profile;
-    private Button btn_save_changes;
 
     public List<UserManager> mCheckUserManager;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_upload, container, false);
+        View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        et_userName_profile = root.findViewById(R.id.et_name_profile);
-        editTextEmail_profile = root.findViewById(R.id.et_email_profile);
-        editTextPassword_profile = root.findViewById(R.id.et_password_profile);
-        et_PhoneNo_profile = root.findViewById(R.id.et_phoneNo_profile);
-        btn_save_changes = root.findViewById(R.id.button_save);
+        CircleImageView circle_image_view = root.findViewById(R.id.image_view);
+        EditText et_userName_profile = root.findViewById(R.id.et_name_profile);
+        EditText editTextEmail_profile = root.findViewById(R.id.et_email_profile);
+        EditText editTextPassword_profile = root.findViewById(R.id.et_password_profile);
+        EditText et_PhoneNo_profile = root.findViewById(R.id.et_phoneNo_profile);
+        Button btn_save_changes = root.findViewById(R.id.button_save);
 
-        mCheckUserManager = new ArrayList<>();
+        /*mCheckUserManager = new ArrayList<>();
         Intent intentFromHome = getActivity().getIntent();
-        final String currEmail = intentFromHome.getStringExtra(LogIn.EXTRA_EMAIL);
+        final String currEmail = intentFromHome.getStringExtra(LogIn.EXTRA_EMAIL);*/
 
-        reff = FirebaseDatabase.getInstance().getReference().child("Users");
+        /*reff = FirebaseDatabase.getInstance().getReference().child("Users");
         reff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -86,7 +84,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
 
             }
-        });
+        });*/
 
         return root;
     }
