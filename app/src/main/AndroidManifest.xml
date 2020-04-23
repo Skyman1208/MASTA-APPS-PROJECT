@@ -33,6 +33,7 @@
         </activity>
         <activity android:name=".navigation.menuNav.uploadData.UploadFragment" />
         <activity android:name="com.example.up.navigation.menuNav.home.HomeFragment" />
+
         <activity android:name=".loginSignup.SignUp" />
         <activity android:name="com.example.up.navigation.menuNav.home.subject.retrieveNDisplayData.ImagesActivity" />
         <activity android:name=".loginSignup.LogIn">
