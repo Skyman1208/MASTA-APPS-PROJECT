@@ -30,7 +30,7 @@ public class SignUp extends AppCompatActivity {
     private Button btn_signUp;
     private TextView tv_login;
     private long maxId, userID;
-    private ProgressBar progressBar;
+    private ProgressBar progressBarR;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseRef;
@@ -44,8 +44,8 @@ public class SignUp extends AppCompatActivity {
         editTextEmail = findViewById(R.id.et_email_signUp);
         editTextPassword = findViewById(R.id.et_password_signUp);
         et_PhoneNo = findViewById(R.id.et_phoneNo_signUp);
-        progressBar = findViewById(R.id.progressbar);
-        progressBar.setVisibility(View.GONE);
+        progressBarR = findViewById(R.id.progressbarR);
+        progressBarR.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
         tv_login = findViewById(R.id.tv_login);
         btn_signUp = findViewById(R.id.btn_register_signUp);
@@ -133,7 +133,7 @@ public class SignUp extends AppCompatActivity {
 
         if(passStatus)
         {
-            progressBar.setVisibility(View.VISIBLE);
+            progressBarR.setVisibility(View.VISIBLE);
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -145,7 +145,7 @@ public class SignUp extends AppCompatActivity {
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        progressBar.setVisibility(View.GONE);
+                                        progressBarR.setVisibility(View.GONE);
 
                                         if (task.isSuccessful()) {
                                             mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
