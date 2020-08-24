@@ -76,7 +76,7 @@ public class MenuNavActivity extends AppCompatActivity {
         int userTypeMASTAl = -1;
         userTypeMASTAl = Integer.valueOf(intent.getStringExtra(LogIn.EXTRA_USERTYPEl));
 
-        Toast.makeText(MenuNavActivity.this, userTypeMASTAss + " " + userTypeMASTAl, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MenuNavActivity.this, userTypeMASTAss + " " + userTypeMASTAl, Toast.LENGTH_SHORT).show();
 
         if(userTypeMASTAss >= userTypeMASTAl)
             userTypeMASTA = userTypeMASTAss;

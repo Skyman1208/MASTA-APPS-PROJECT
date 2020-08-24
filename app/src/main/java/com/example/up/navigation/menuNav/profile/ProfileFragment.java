@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -24,8 +26,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.up.R;
+import com.example.up.SplashScreen;
 import com.example.up.loginSignup.LogIn;
 import com.example.up.loginSignup.UserManager;
+import com.example.up.navigation.MenuNavActivity;
 import com.example.up.navigation.menuNav.home.subject.retrieveNDisplayData.ImagesActivity;
 import com.example.up.navigation.menuNav.uploadData.UploadModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -75,9 +79,9 @@ public class ProfileFragment extends Fragment {
     private static final int PICK_IMAGE =1;
     public List<UserManager> mCheckUserManager;
     private StorageReference storageReference;
+    String userType = "-1";
     Uri imageUri;
     String DISPLAY_NAME = null;
-    String thisUserType = currUserType;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,6 +93,7 @@ public class ProfileFragment extends Fragment {
         et_PhoneNo_profile = root.findViewById(R.id.et_phoneNo_profile);
         btn_save_changes = root.findViewById(R.id.button_save);
         image_view_profile = root.findViewById(R.id.image_view);
+        final ProgressBar progressBar = root.findViewById(R.id.progressbar);
 
         image_view_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,9 +107,7 @@ public class ProfileFragment extends Fragment {
         });
 
         mCheckUserManager = new ArrayList<>();
-
         firebaseAuth = FirebaseAuth.getInstance();
-
 
         final String curremail = firebaseAuth.getCurrentUser().getEmail();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -115,7 +118,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mCheckUserManager.clear();
-                Context c = getActivity().getApplicationContext();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     if (ds.child("email").getValue().equals(curremail)){
                         editTextEmail_profile.setText(curremail);
@@ -123,13 +125,14 @@ public class ProfileFragment extends Fragment {
                         et_PhoneNo_profile.setText(ds.child("userPhoneNo").getValue(String.class));
                         editTextPassword_profile.setText(ds.child("userPassword").getValue(String.class));
 
-                    }
-                    if(user.getPhotoUrl() !=null){
-                        Picasso.with(c).load(user.getPhotoUrl()).into(image_view_profile);
+                        if(user.getPhotoUrl() != null){
+                            Picasso.with(getActivity()).load(user.getPhotoUrl()).into(image_view_profile);
+                        }
+                        progressBar.setVisibility(View.GONE);
+
+                        break;
                     }
                 }
-
-//
             }
 
             @Override
@@ -142,13 +145,24 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 uploadImage();
-                String userName = et_userName_profile.getText().toString().trim();
-                String email = editTextEmail_profile.getText().toString().trim();
-                String userPhoneNo = et_PhoneNo_profile.getText().toString().trim();
-                String userPassword = editTextPassword_profile.getText().toString().trim();
+                final String userName = et_userName_profile.getText().toString().trim();
+                final String email = editTextEmail_profile.getText().toString().trim();
+                final String userPhoneNo = et_PhoneNo_profile.getText().toString().trim();
+                final String userPassword = editTextPassword_profile.getText().toString().trim();
 
+                DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
+                mDatabaseRef.child(user.getUid()).child("userType").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        userType = dataSnapshot.getValue(String.class);
+                        updateProfile(userId, userName, email, userPhoneNo, userPassword, userType);
+                    }
 
-                updateProfile(userId, userName, email, userPhoneNo, userPassword, thisUserType);
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getActivity(), "Database Error", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
@@ -201,11 +215,7 @@ public class ProfileFragment extends Fragment {
 
                             // Error, Image not uploaded
 
-                            Toast
-                                    .makeText(getActivity(),
-                                            "Failed " + e.getMessage(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
+                            Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(
@@ -264,5 +274,4 @@ public class ProfileFragment extends Fragment {
         Toast.makeText(getContext(),"Info Updated", Toast.LENGTH_LONG).show();
         return true;
     }
-
 }

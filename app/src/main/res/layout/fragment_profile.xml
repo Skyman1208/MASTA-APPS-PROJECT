@@ -12,39 +12,52 @@
 
         <RelativeLayout
             android:id="@+id/layoutHead"
-            android:background="#fffdd0"
             android:layout_width="match_parent"
-            android:layout_height="220dp">
+            android:layout_height="250dp"
+            android:background="@drawable/gradient_animation">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_view"
-                android:background="@drawable/user"
-                android:layout_marginTop="30dp"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:elevation="5dp"/>
-
-            <EditText
-                android:hint="First name"
-                android:textAlignment="center"
-                android:layout_marginTop="12dp"
-                android:textColor="@android:color/black"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/image_view"
-                android:enabled="true"
-                android:id="@+id/et_name_profile"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:textSize="25dp"/>
+                android:layout_marginTop="25dp"
+                android:elevation="5dp"
+                android:src="@drawable/user" />
 
             <ProgressBar
-                android:visibility="invisible"
-                android:id="@+id/progressbar_pic"
-                android:layout_centerInParent="true"
+                android:id="@+id/progressbar"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_alignTop="@+id/image_view"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="-20dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="10dp" />
+
+            <EditText
+                android:id="@+id/et_name_profile"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_view"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="30dp"
+                android:backgroundTint="@color/white"
+                android:enabled="true"
+                android:hint="First name"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="20dp" />
 
         </RelativeLayout>
 
@@ -180,15 +193,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-            <ProgressBar
-                android:id="@+id/progressbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:visibility="invisible" />
-
             <Button
                 android:id="@+id/button_save"
                 android:layout_width="140dp"
@@ -198,7 +202,8 @@
                 android:text="Save Changes"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginTop="50dp"/>
 
         </LinearLayout>
 

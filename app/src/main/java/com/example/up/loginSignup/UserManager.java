@@ -13,6 +13,30 @@ public class UserManager {
 
     public UserManager(){ }
 
+    public UserManager(String userName, String email, String userPassword, String userPhoneNo, String userId){
+        if(userName.isEmpty())
+            userName = "None";
+        else
+            this.userName = userName;
+
+        if(email.isEmpty())
+            email = "None";
+        else
+            this.email = email;
+
+        if(userPassword.isEmpty())
+            userPassword = "None";
+        else
+            this.userPassword = userPassword;
+
+        if(userPhoneNo.isEmpty())
+            userPhoneNo = "None";
+        else
+            this.userPhoneNo = userPhoneNo;
+
+        this.userId = userId;
+    }
+
     public UserManager(String userName, String email, String userPassword, String userPhoneNo, String userId, String userType){
         if(userName.isEmpty())
             userName = "None";
