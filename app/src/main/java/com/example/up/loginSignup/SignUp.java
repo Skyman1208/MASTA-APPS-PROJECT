@@ -26,10 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SignUp extends AppCompatActivity {
 
-    private EditText et_userName;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private EditText et_PhoneNo;
+    private EditText et_userName, editTextEmail, editTextPassword, et_PhoneNo;
     private Button btn_signUp;
     private TextView tv_login;
     private long maxId, userID;
@@ -91,6 +88,7 @@ public class SignUp extends AppCompatActivity {
         final String email = editTextEmail.getText().toString().trim();
         final String password = editTextPassword.getText().toString().trim();
         final String phoneNo = et_PhoneNo.getText().toString().trim();
+        final String userType = "0";
         final String userId = mDatabaseRef.push().getKey();
 
         if (fullName.isEmpty()) {
@@ -141,12 +139,10 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                UserManager userManager = new UserManager(fullName, email, password, phoneNo, userId);
+                                UserManager userManager = new UserManager(fullName, email, password, phoneNo, userId, userType);
 
-
-                                FirebaseDatabase.getInstance().getReference("Users")
-                                        .child(String.valueOf(userId))//FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(userManager).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getUid()).setValue(userManager)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         progressBar.setVisibility(View.GONE);

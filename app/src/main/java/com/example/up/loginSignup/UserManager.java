@@ -8,11 +8,12 @@ public class UserManager {
     public String userPassword;
     public String userPhoneNo;
     public String userId;
+    public String userType;
     private String uKey;
 
     public UserManager(){ }
 
-    public UserManager(String userName, String email, String userPassword, String userPhoneNo, String userId){
+    public UserManager(String userName, String email, String userPassword, String userPhoneNo, String userId, String userType){
         if(userName.isEmpty())
             userName = "None";
         else
@@ -33,6 +34,11 @@ public class UserManager {
         else
             this.userPhoneNo = userPhoneNo;
 
+        if(userType.isEmpty())
+            userType = "0";
+        else
+            this.userType = userType;
+
         this.userId = userId;
     }
 
@@ -47,6 +53,9 @@ public class UserManager {
 
     public String getUserPhoneNo() { return userPhoneNo; }
     public void setUserPhoneNo(String userPhoneNo) { userPhoneNo = userPhoneNo; }
+
+    public String getUserType() { return userType; }
+    public void setUserType(String userType) { userType = userType; }
 
     public String getUserId(){return userId;}
 

@@ -67,7 +67,6 @@ public class ProfileFragment extends Fragment {
     private Button btn_save_changes;
     private FirebaseAuth firebaseAuth;
     private CircleImageView image_view_profile;
-    private static final String USERS = "users";
     private static final int PICK_IMAGE =1;
     private String userID;
     public List<UserManager> mCheckUserManager;
@@ -84,7 +83,7 @@ public class ProfileFragment extends Fragment {
         editTextPassword_profile = root.findViewById(R.id.et_password_profile);
         et_PhoneNo_profile = root.findViewById(R.id.et_phoneNo_profile);
         btn_save_changes = root.findViewById(R.id.button_save);
-        image_view_profile =(CircleImageView) root.findViewById(R.id.image_view);
+        image_view_profile = root.findViewById(R.id.image_view);
 
         image_view_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +99,6 @@ public class ProfileFragment extends Fragment {
         mCheckUserManager = new ArrayList<>();
 
         firebaseAuth = FirebaseAuth.getInstance();
-
 
 
         final String curremail = firebaseAuth.getCurrentUser().getEmail();
@@ -143,7 +141,7 @@ public class ProfileFragment extends Fragment {
                 String userPhoneNo = et_PhoneNo_profile.getText().toString().trim();
                 String userPassword = editTextPassword_profile.getText().toString().trim();
 
-                updateProfile(userId, userName, email, userPhoneNo, userPassword);
+                updateProfile(userId, userName, email, userPhoneNo, userPassword, "user");
             }
         });
 
@@ -250,10 +248,11 @@ public class ProfileFragment extends Fragment {
                     }
                 });
     }
-    private boolean updateProfile (String userId, String userName, String email, String userPhoneNo, String userPassword){
+
+    private boolean updateProfile (String userId, String userName, String email, String userPhoneNo, String userPassword, String userType){
         DatabaseReference dR = FirebaseDatabase.getInstance().getReference("Users").child(userId);
 
-        UserManager userManager = new UserManager(userName, email,userPassword, userPhoneNo, userId);
+        UserManager userManager = new UserManager(userName, email,userPassword, userPhoneNo, userId, userType);
         dR.setValue(userManager);
         Toast.makeText(getContext(),"Info Updated", Toast.LENGTH_LONG).show();
         return true;

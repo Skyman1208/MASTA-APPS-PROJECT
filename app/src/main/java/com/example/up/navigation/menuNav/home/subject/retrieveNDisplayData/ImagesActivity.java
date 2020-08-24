@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.up.R;
 import com.example.up.colourAnimation;
+import com.example.up.navigation.MenuNavActivity;
 import com.example.up.navigation.menuNav.home.HomeFragment;
 import com.example.up.navigation.menuNav.uploadData.UploadModel;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,7 +46,8 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     public DatabaseReference mDatabaseRef;
     public ValueEventListener mDBListener;
 
-    public List<UploadModel> mUploadModels;
+    public ArrayList<UploadModel> mFilteredList;
+    private List<UploadModel> mUploadModels;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -107,21 +109,24 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         });
     }
 
-    public void filter(String text) {
-        ArrayList<UploadModel> filteredList = new ArrayList<>();
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, MenuNavActivity.class));
+    }
 
+    public void filter(String text) {
         for (UploadModel item : mUploadModels) {
             if (item.getName().toLowerCase().contains(text.toLowerCase())) {
-                filteredList.add(item);
+                mFilteredList.add(item);
             }
         }
-        mAdapter.filterList(filteredList);
+        mAdapter.filterList(mFilteredList);
     }
 
     @Override
     public void onItemClick(int position) {
         UploadModel selectedItem = mUploadModels.get(position);
-        final String selectedLink = selectedItem.getLink();
+        String selectedLink = selectedItem.getLink();
         if (selectedLink.isEmpty()) {
             Toast.makeText(getApplicationContext(), "URL Link doesn't exist", Toast.LENGTH_SHORT).show();
         } else{

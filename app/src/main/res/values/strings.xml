@@ -46,11 +46,11 @@
         <item>Science (PRIMARY)</item>
         <item>Science (SECONDARY)</item>
 
-        <item>Rekabentuk Teknologi (PRIMARY)</item>
-        <item>Rekabentuk Teknologi (SECONDARY)</item>
+        <item>Technology Design (PRIMARY)</item>
+        <item>Technology Design (SECONDARY)</item>
 
-        <item>Teknologi Maklumat dan Komunikasi</item>
-        <item>Asas Sains Komputer</item>
-        <item>Sains Komputer</item>
+        <item>Information Communication and Technology</item>
+        <item>Basic Computer Science</item>
+        <item>Computer Science</item>
     </string-array>
 </resources>

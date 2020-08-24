@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -20,7 +21,7 @@ public class HomeFragment extends Fragment {
 
     private CardView biology, chemistry, physics, addMath, mathP, mathS, sciP, sciS, rbtP, rbtS, AsasSainsKomp, SainsKomp, teknoMakluKomuni;
     public static final String EXTRA_SUBJECT = "subject";
-    RelativeLayout mLayout;
+    GridLayout mLayout;
     AnimationDrawable animDrawable;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
