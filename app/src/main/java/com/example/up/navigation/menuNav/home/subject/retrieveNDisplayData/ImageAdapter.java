@@ -2,6 +2,7 @@ package com.example.up.navigation.menuNav.home.subject.retrieveNDisplayData;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,17 +57,25 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 mContext.startActivity(detailIntent);
             }
         });
+        holder.textViewName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UploadModel selectedItem = mUploadModels.get(position);
+                final String selectedLink = selectedItem.getLink();
+                if (selectedLink.isEmpty()) {
+                    Toast.makeText(mContext, "Url does not exist",Toast.LENGTH_SHORT).show();
+                } else{
+                    Uri uri = Uri.parse(selectedLink); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    mContext.startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mUploadModels.size();
-    }
-
-    public void updateList(List<UploadModel> newList) {
-        exampleListFull = new ArrayList<>();
-        exampleListFull.addAll(newList);
-        notifyDataSetChanged();
     }
 
     public void filterList(ArrayList<UploadModel> filteredList) {

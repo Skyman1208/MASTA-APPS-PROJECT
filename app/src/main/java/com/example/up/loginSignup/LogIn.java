@@ -39,6 +39,7 @@ public class LogIn extends AppCompatActivity {
     TextView tv_register;
     String userTypeMASTA = "-1";
     public static final String EXTRA_USERTYPEl = "userType";
+    public static String currUserType = "0";
 
     FirebaseAuth firebaseAuth;
 
@@ -84,6 +85,8 @@ public class LogIn extends AppCompatActivity {
                                                 Intent intent = new Intent(LogIn.this, MenuNavActivity.class);
                                                 intent.putExtra(LogIn.EXTRA_USERTYPEl, String.valueOf(userTypeMASTA));
                                                 startActivity(intent);
+                                                currUserType = userTypeMASTA;
+
                                             }
 
                                             @Override

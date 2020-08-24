@@ -1,5 +1,6 @@
 package com.example.up.navigation.menuNav.profile;
 
+
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -45,6 +46,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +59,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 import static android.provider.OpenableColumns.DISPLAY_NAME;
+import static com.example.up.loginSignup.LogIn.currUserType;
+
 
 public class ProfileFragment extends Fragment {
 
@@ -68,11 +73,11 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private CircleImageView image_view_profile;
     private static final int PICK_IMAGE =1;
-    private String userID;
     public List<UserManager> mCheckUserManager;
     private StorageReference storageReference;
     Uri imageUri;
     String DISPLAY_NAME = null;
+    String thisUserType = currUserType;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -117,6 +122,7 @@ public class ProfileFragment extends Fragment {
                         et_userName_profile.setText(ds.child("userName").getValue(String.class));
                         et_PhoneNo_profile.setText(ds.child("userPhoneNo").getValue(String.class));
                         editTextPassword_profile.setText(ds.child("userPassword").getValue(String.class));
+
                     }
                     if(user.getPhotoUrl() !=null){
                         Picasso.with(c).load(user.getPhotoUrl()).into(image_view_profile);
@@ -141,7 +147,8 @@ public class ProfileFragment extends Fragment {
                 String userPhoneNo = et_PhoneNo_profile.getText().toString().trim();
                 String userPassword = editTextPassword_profile.getText().toString().trim();
 
-                updateProfile(userId, userName, email, userPhoneNo, userPassword, "user");
+
+                updateProfile(userId, userName, email, userPhoneNo, userPassword, thisUserType);
             }
         });
 

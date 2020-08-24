@@ -2,7 +2,6 @@ package com.example.up.navigation.menuNav.home.subject.retrieveNDisplayData;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,17 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.up.R;
 import com.example.up.colourAnimation;
-import com.example.up.navigation.MenuNavActivity;
 import com.example.up.navigation.menuNav.home.HomeFragment;
 import com.example.up.navigation.menuNav.uploadData.UploadModel;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +41,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     public DatabaseReference mDatabaseRef;
     public ValueEventListener mDBListener;
 
-    public ArrayList<UploadModel> mFilteredList;
-    private List<UploadModel> mUploadModels;
+    public List<UploadModel> mUploadModels;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -109,31 +103,22 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, MenuNavActivity.class));
-    }
-
     public void filter(String text) {
+        ArrayList<UploadModel> filteredList = new ArrayList<>();
+
         for (UploadModel item : mUploadModels) {
             if (item.getName().toLowerCase().contains(text.toLowerCase())) {
-                mFilteredList.add(item);
+                filteredList.add(item);
             }
         }
-        mAdapter.filterList(mFilteredList);
+        mAdapter.filterList(filteredList);
     }
+
+
 
     @Override
     public void onItemClick(int position) {
-        UploadModel selectedItem = mUploadModels.get(position);
-        String selectedLink = selectedItem.getLink();
-        if (selectedLink.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "URL Link doesn't exist", Toast.LENGTH_SHORT).show();
-        } else{
-            Uri uri = Uri.parse(selectedLink); // missing 'http://' will cause crashed
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
-        }
+
     }
 
     @Override
